@@ -17,6 +17,7 @@ message UserContext {
   string user_name = 2;
   string image     = 3;
   int32 balance    = 4; // øre
+  bool wants_contactor_screen = 5;
 }
 
 message ErrorContext {
