@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package fridge.v1;
+
+message Item {
+  string item_id   = 1;
+  string item_name = 2;
+  uint32 price     = 3; // øre
+}
+
+message CartContext {
+  repeated Item items = 1;
+}
+
+message UserContext {
+  string user_id   = 1; // rfid
+  string user_name = 2;
+  string image     = 3;
+  int32 balance    = 4; // øre
+}
+
+message ErrorContext {
+  string message = 1;
+}
+
+message MissingUserContext {
+  string user_id = 1; // rfid
+}
+
+message ScanItemRequest {
+  string item_id = 1;
+}
+
+message TapStudentCardRequest {
+  string user_id = 1; // rfid
+}
+
+enum State {
+  STATE_UNSPECIFIED        = 0;
+  STATE_USER               = 1;
+  STATE_CART               = 2;
+  STATE_RECEIPT            = 3;
+  STATE_ERROR              = 4;
+  STATE_MISSING_USER       = 5;
+  STATE_INSUFFICIENT_FUNDS = 6;
+  STATE_STANDBY            = 7;
+}
+
+message Status {
+  uint32                      timeout_timer        = 1; // seconds
+  State                       state                = 2;
+  optional UserContext        user_context         = 3;
+  optional CartContext        cart_context         = 4;
+  optional ErrorContext       error_context        = 5;
+  optional MissingUserContext missing_user_context = 6;
+}
+
+message GetStateDiagramRequest {}
+
+message GetStateDiagramResponse {
+  bytes diagram = 1; // PNG image data
+}
+
+message GetStatusRequest {}
+
+message GetStatusResponse {
+  Status status = 1;
+}
+
+message ScanItemResponse {
+  Status status = 1;
+}
+
+message TapStudentCardResponse {
+  Status status = 1;
+}
+
+message TapBlueRequest {}
+
+message TapBlueResponse {
+  Status status = 1;
+}
+
+service MachineService {
+  rpc GetStateDiagram(GetStateDiagramRequest) returns (GetStateDiagramResponse);
+  rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
+  rpc ScanItem(ScanItemRequest) returns (ScanItemResponse);
+  rpc TapStudentCard(TapStudentCardRequest) returns (TapStudentCardResponse);
+  rpc TapBlue(TapBlueRequest) returns (TapBlueResponse);
+}
