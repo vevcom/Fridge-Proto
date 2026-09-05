@@ -6,6 +6,7 @@ message Item {
   string item_id   = 1;
   string item_name = 2;
   uint32 price     = 3; // øre
+  string image     = 4;
 }
 
 message CartContext {
