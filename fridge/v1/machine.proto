@@ -16,7 +16,7 @@ message CartContext {
 message UserContext {
   string user_id   = 1; // rfid
   string user_name = 2;
-  string image     = 3;
+  optional string image = 3;
   int32 balance    = 4; // øre
   bool wants_contactor_screen = 5;
 }
